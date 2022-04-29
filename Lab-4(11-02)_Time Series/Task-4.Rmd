@@ -1,0 +1,87 @@
+---
+output:
+  word_document: default
+  html_document: default
+---
+## CSE3506 - Essentials of Data Analytics
+  
+## Lab Task - 4(11/02/2022)
+## Time Series Forecasting
+  
+### Name: Revanth Bhargava Boyidi
+### Reg. No.: 19BCE1177
+    
+**Store Airpassengers dataset (inbuilt dataset available in ‘R’) in a dataframe named “data”, install packages such as ‘forecast’, ‘tseries’. **
+```{r}
+setwd("D:\\SEM-VI\\EDA_CSE3506\\Lab\\Lab-4(11-02)_Time Series")
+rm(list=ls()) 		#To clear the environment
+
+data <- AirPassengers
+
+#install.packages("r package", repos = "http://cran.us.r-project.org")
+#install.packages('forecast')
+#install.packages('tseries')
+library('forecast')
+library('tseries')
+```
+  
+**(i)Display entire dataset**
+```{r}
+data
+```
+  
+**(ii)Check for unfilled data**
+```{r}
+length(data[is.na(data) == TRUE])
+```
+Data doesn't have unfilled data.  
+  
+**(iii)Display the statistical info of the dataset such as min, max, 1st quartile, 3rd quartile, mean and median.**
+```{r}
+summary(data)
+```
+  
+**(iv)Plot ‘data’ (No. of Air passengers Vs Year)**
+```{r}
+plot(data, xlab = 'Year', ylab = 'No. of Air passengers', main = 'No. of Air passengers Vs Year', type='o', pch=20)
+```
+  
+**(v)Plot as timeseries ‘data’ (monthwise)**
+```{r}
+boxplot(data~cycle(data), xlab = 'Month', ylab = 'No. of Air passengers', main = 'Monthly Air Passengers from 1949 to 1961')
+```
+  
+**(vi)Decompose the data as multiplicative and store as ‘ddata’**
+```{r}
+ddata <- decompose(data,"multiplicative")
+```
+  
+**(vii)Plot ‘ddata’**
+```{r}
+autoplot(ddata)
+```
+  
+**(viii)Plot the following: trend, seasonal and random separately.**
+```{r}
+par(mfrow=c(3,1))
+plot(ddata$trend)
+plot(ddata$seasonal)
+plot(ddata$random)
+```
+  
+**(ix)Perform ADF test for stationarity**
+```{r}
+adf.test(data, alternative="stationary", k=0)
+```
+  
+**(x)Plot ACF and PACF**
+```{r}
+par(mfrow=c(1,2))
+acf(data)
+pacf(data)
+```
+  
+**(xi)Model using ARIMA**
+```{r}
+auto.arima(data)
+```

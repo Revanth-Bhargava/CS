@@ -1,0 +1,86 @@
+---
+output:
+  word_document: default
+  html_document: default
+---
+**Importing Libraries**
+```{r}
+setwd("D:\\SEM-VI\\EDA_CSE3506\\Lab\\Lab-6(09-04)_Naive Bayes")
+rm(list=ls())       #To clear the environment
+#install.packages('naivebayes')
+#install.packages('psych') #For personality research
+#install.packages('dplyr')
+library(naivebayes)
+library(dplyr)
+library(ggplot2)
+library(psych)
+```
+  
+**Importing Dataset**
+```{r}
+dt<-read.csv('Lab Task 6.csv')
+str(dt)
+```
+  
+```{r}
+dt$admit<-as.factor(dt$admit)
+dt$rank<-as.factor(dt$rank)
+```
+  
+**Understanding the data**  
+```{r}
+pairs.panels(dt) # to check the independence of attributes among them
+```
+  
+```{r}
+dt %>% # to have initial look up of 
+  ggplot(aes(x=admit,y=gre,fill=admit))+
+  geom_boxplot()+
+  ggtitle('Admit Box Plot based on GRE Score')
+```
+  
+```{r}
+dt %>%
+  ggplot(aes(x=gre,fill=admit))+
+  geom_density(alpha=0.75,color='black')+
+  ggtitle('Density Plot based on GRE Score')
+```
+  
+**Splitting Dataset into Training data and Test data**
+```{r}
+set.seed(234)
+smpl<-sample(2,nrow(dt),replace=T,prob=c(0.8,0.2))
+train<-dt[smpl==1,]
+test<-dt[smpl==2, ]
+```
+  
+```{r}
+#P(Admit=1|Rank=1)= P(Admit=1)*P(Rank=1|Admit=1)/P(Rank=1)
+
+mdl<-naive_bayes(admit~ .,data=train)
+mdl
+plot(mdl)
+```
+  
+```{r}
+p<-predict(mdl,train,type='prob')
+head(cbind(p,train))
+```
+  
+**Evaluating the Naives Bayes Model**
+```{r}
+#To find the accuracy of prediction on train data
+
+p1<-predict(mdl,train)
+(tab1<-table(p1,train$admit))
+1-sum(diag(tab1))/sum(tab1)
+```
+ 
+**Evaluating Test Data** 
+```{r}
+#To find the accuracy of prediction on test data
+
+p2<-predict(mdl,test)
+(tab2<-table(p2,test$admit))
+1-sum(diag(tab2))/sum(tab2)
+```

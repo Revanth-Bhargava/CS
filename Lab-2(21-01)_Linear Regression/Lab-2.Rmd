@@ -1,0 +1,7 @@
+```{r}
+setwd("D:\\SEM-VI\\EDA_CSE3506\\Lab\\Lab-2(21-01)_Linear Regression")
+library("readxl")
+data <- read_excel("Dataset.xls")
+data
+```
+

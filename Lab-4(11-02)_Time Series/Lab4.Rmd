@@ -1,0 +1,92 @@
+---
+title: "Lab - 4 Time series Forecasting"
+output:
+  word_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+```
+
+###clearing the environment and Downloading the required packages
+```{r}
+#install.packages("r package", repos = "http://cran.us.r-project.org")
+#install.packages('forecast')
+#install.packages('tseries')
+library('forecast')
+library('tseries')
+
+```
+
+###Loading and printing the dataset
+```{r}
+data <- AirPassengers
+data
+
+```
+###Checking for Unfilled data
+```{r}
+start(data)
+end(data)
+sum(is.na(data))
+```
+###Displaying the statistical summary of the dataset
+```{r}
+
+summary(data)
+```
+###Plotting ‘data’ (No. of Air passengers Vs Year)
+```{r}
+plot(data)
+
+```
+###Plotting 'data' Monthwise
+```{r}
+tsdata <- ts(data,frequency = 12)
+plot(tsdata)
+```
+###Decomposing the data as multiplicative and storing it as ‘ddata’ and plotting the same.
+
+```{r}
+ddata <- decompose(tsdata, "multiplicative")
+plot(ddata)
+```
+###Plotting the following: trend, seasonal and random separately.
+```{r}
+plot(ddata$trend)
+```
+
+```{r}
+plot(ddata$seasonal)
+```
+
+```{r}
+plot(ddata$random)
+```
+
+###Performing ADF test for stationarity
+```{r}
+adf.test(diff(log(data)), alternative="stationary", k=0)
+
+```
+
+###Plotting ACF  
+```{r}
+
+acf(diff(log(data)))
+```
+###Plotting PACF
+```{r}
+pacf(diff(log(data)))
+```
+
+###Model using ARIMA
+```{r}
+Adata <- arima(log(data), c(0, 1, 1),seasonal = list(order = c(0, 1, 1), period = 12))
+Adata
+
+
+```
+

@@ -1,0 +1,36 @@
+```{r}
+rm(list=ls()) 			#To clear the environment 
+data <- mtcars			#mtcars is a default dataset
+```
+
+
+```{r}
+library(dplyr)		#dplyr is a library, which has functions related to data analysis
+data <- sample_n(data,15)
+```
+
+
+```{r}
+# install.packages("ggplot2") 
+library("ggplot2")         
+ggplot(data,aes(x=wt,y=mpg))+geom_point() #To plot - wt/gear
+cor.test(data$wt,data$mpg)   # to find the correlation value
+```
+
+
+```{r}
+# simple linear regression
+slr = lm(mpg~wt, data) 
+summary(slr)
+plot(slr$resid)  # Residual plot
+qqnorm(slr$resid)   #Q-Q Plot
+```
+
+
+```{r}
+# Multiple linear regression
+mlr = lm(mpg~wt+gear, data) 
+summary(mlr)
+plot(mlr$resid)  # Residual plot
+qqnorm(mlr$resid)   #Q-Q Plot
+```

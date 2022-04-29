@@ -1,0 +1,53 @@
+---
+output:
+  word_document: default
+  html_document: default
+---
+**Importing Libraries**
+```{r}
+rm(list=ls())
+#install.packages('ClusterR')
+#install.packages('cluster')
+#library(tidyverse)  # data manipulation
+#library(cluster)    # clustering algorithms
+```
+  
+**Importing Dataset**
+```{r}
+data <- read.csv("Lab Task 7_K-Means.csv",header=TRUE)
+head(data, 10)
+```
+  
+**Understanding the data**  
+```{r}
+dim(data)
+str(data)
+summary(data)
+```
+```{r}
+# Checking for NULL values
+sum(is.na(data))
+```
+There are no missing values in the dataset.
+  
+```{r}
+data$system<-as.factor(data$bore)
+str(data)
+```
+  
+**Price distribution based on cylinder diameter(bore)**
+```{r}
+pdt<-data[,c(7,12)]
+plot(pdt, main="Price based on cyl bore")
+km<-kmeans(pdt,3)
+plot(pdt,col=(km$cluster+2))
+km
+```
+  
+**Checking for optimal 'K'**
+```{r}
+dt<-pdt
+ss<-(nrow(dt)-1)*sum(apply(dt,2,var))
+for(i in 2:10) ss[i]<-sum(kmeans(dt,centers = i)$withinss)
+plot(1:10,ss,type='b',xlab='K',ylab='distortion')
+```

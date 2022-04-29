@@ -1,0 +1,42 @@
+---
+output:
+  word_document: default
+  html_document: default
+---
+```{r}
+rm(list=ls())
+```
+  
+```{r}
+xs <- seq(0,4,len=20) 
+xs
+```
+  
+```{r}
+f <-  function(x) {1.2 * (x-2)^2 + 3.2}
+```
+  
+```{r}
+plot(xs , f (xs), type="l",xlab="x",ylab=expression(1.2(x-2)^2 +3.2))
+
+grad <- function(x){
+  1.2*2*(x-2)
+}
+
+x <- 0.1 # initialize the first guess for x-value
+xtrace <- x # store x -values for graphing purposes (initial)
+ftrace <- f(x) # store y-values (function evaluated at x) for graphing purposes (initial)
+stepFactor <- 0.01 # learning rate 'alpha'
+for (step in 1:5000) {
+  x <- x - stepFactor*grad(x) # gradient descent update
+  xtrace <- c(xtrace,x) # update for graph
+  ftrace <- c(ftrace,f(x)) # update for graph
+}
+
+lines ( xtrace , ftrace , type="b",col="blue") # type=b (both points & lines)
+text (0.5,6, "Gradient Descent",col="red",pos= 4)
+
+print(x) # x converges to 2.0
+text(2,4,"x=2",col="red",pos=1)
+text(2,4,"(Global minimum)",col="red",pos=3)
+```

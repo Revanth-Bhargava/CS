@@ -1,0 +1,8 @@
+Dataset 1:  https://archive.ics.uci.edu/ml/datasets/iris
+Dataset 2:  https://www.kaggle.com/c/titanic/data
+Dataset 3: https://archive.ics.uci.edu/ml/datasets/bank+marketing#
+Dataset 4: https://archive.ics.uci.edu/ml/datasets/Haberman%27s%2BSurvival
+Dataset 5: https://archive.ics.uci.edu/ml/datasets/adult
+Dataset 6: https://archive.ics.uci.edu/ml/datasets/wine+quality
+Dataset 7: https://archive.ics.uci.edu/ml/datasets/default+of+credit+card+clients
+Dataset 8: https://www.kaggle.com/uciml/pima-indians-diabetes-database

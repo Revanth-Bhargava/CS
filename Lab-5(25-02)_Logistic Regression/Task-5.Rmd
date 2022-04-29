@@ -1,0 +1,66 @@
+---
+output:
+  word_document: default
+  html_document: default
+---
+## CSE3506 - Essentials of Data Analytics
+  
+## Lab Task - 5(25/02/2022)
+## Logistic Regression
+  
+### Name: Revanth Bhargava Boyidi
+### Reg. No.: 19BCE1177
+  
+Setting the path and Importing libraries
+```{r}
+setwd("D:\\SEM-VI\\EDA_CSE3506\\Lab\\Lab-5(25-02)_Logistic Regression")
+rm(list=ls()) 		#To clear the environment
+```
+  
+**Importing Dataset**
+```{r}
+data <- read.csv("Dataset.csv",header=TRUE)
+head(data, 10)
+```
+  
+**Understanding the data**
+```{r}
+dim(data)
+summary(data)
+sum(is.na(data))
+```
+There are no missing values in the dataset.
+  
+**Splitting Dataset into Training data and Test data**
+```{r}
+split = sort(sample(nrow(data), nrow(data)*.7))
+train <- data[split,]
+dim(train)
+test <- data[-split,]
+dim(test)
+```
+Dataset is divided in the ratio 7:3 for training and testing the model respectively.
+  
+**Formulating Logistic Regression model**  
+```{r}
+model <- glm(default.payment.next.month ~., data = train, family = binomial)
+summary(model)
+```
+  
+**Predicting Test Data**
+```{r}
+prediction <- predict(model, test, type="response")
+prediction <- ifelse(prediction > 0.5, 1, 0)
+head(prediction)
+```
+Here if the obtained value is is greater the 0.5, then it is assigned as 1, otherwise 0.  
+This is done because, logistic regression is done on categorical values only.
+  
+**Evaluating Test Data**
+```{r}
+result <- table(prediction, test[,25])
+result
+accuracy <- sum(diag(result))/sum(result)
+accuracy
+```
+The model developed produces approximately 80% accurate results.
